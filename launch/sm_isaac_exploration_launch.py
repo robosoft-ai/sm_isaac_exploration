@@ -33,7 +33,7 @@ def generate_launch_description():
     # Get the launch directory
     sm_isaac_exploration_dir = get_package_share_directory("sm_isaac_exploration")
     sm_isaac_exploration_launch_dir = os.path.join(sm_isaac_exploration_dir, "launch")
-    
+
     nav_dir = get_package_share_directory("carter_navigation")
     nav_dir_launch = os.path.join(nav_dir, "launch")
 
@@ -98,16 +98,15 @@ def generate_launch_description():
     declare_params_file_cmd = DeclareLaunchArgument(
         "params_file",
         # default_value=os.path.join(sm_isaac_exploration_dir, "config", "sm_isaac_exploration_navigation_params.yaml"),
-        default_value=os.path.join(sm_isaac_exploration_dir, "config", "rtx_carter_navigation_params.yaml"),
+        default_value=os.path.join(
+            sm_isaac_exploration_dir, "config", "rtx_carter_navigation_params.yaml"
+        ),
         description="Full path to the ROS2 parameters file to use for all launched nodes",
     )
 
     declare_bt_xml_cmd = DeclareLaunchArgument(
         "default_nav_to_pose_bt_xml",
-        default_value= os.path.join(
-            sm_isaac_exploration_dir, "config", "navigation_tree.xml"
-        )
-        ,
+        default_value=os.path.join(sm_isaac_exploration_dir, "config", "navigation_tree.xml"),
         description="Full path to the behavior tree xml file to use",
     )
 
@@ -133,7 +132,9 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         "map",
-        default_value=os.path.join(sm_isaac_exploration_dir, "maps", "improved_carter_warehouse_navigation.yaml"),
+        default_value=os.path.join(
+            sm_isaac_exploration_dir, "maps", "improved_carter_warehouse_navigation.yaml"
+        ),
         # default_value=os.path.join(nav_dir, "maps", "carter_warehouse_navigation.yaml"),
         description="Full path to map file to load",
     )
@@ -193,10 +194,12 @@ def generate_launch_description():
     #         "default_nav_to_pose_bt_xml": default_nav_to_pose_bt_xml,
     #     }.items(),
     # )
-    
+
     carter_cmd = IncludeLaunchDescription(
         # PythonLaunchDescriptionSource(os.path.join(sm_isaac_exploration_launch_dir, "carter_navigation.launch.py")),
-        PythonLaunchDescriptionSource(os.path.join(sm_isaac_exploration_launch_dir, "carter_navigation_rtx.launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_isaac_exploration_launch_dir, "carter_navigation_rtx.launch.py")
+        ),
         launch_arguments={
             "namespace": namespace,
             "use_namespace": use_namespace,
@@ -229,7 +232,7 @@ def generate_launch_description():
         ],
         arguments=["--ros-args", "--log-level", "INFO"],
     )
-    
+
     keyboard_client_node = Node(
         package="keyboard_client",
         executable="keyboard_server_node.py",

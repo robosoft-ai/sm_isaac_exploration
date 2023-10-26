@@ -22,12 +22,12 @@ if [ "$(docker ps -a --quiet --filter status=exited --filter name=$CONTAINER_NAM
     docker rm $CONTAINER_NAME > /dev/null
 fi
 
-# Re-use existing container.
-if [ "$(docker ps -a --quiet --filter status=running --filter name=$CONTAINER_NAME)" ]; then
-    print_info "Attaching to running container: $CONTAINER_NAME"
-    docker exec -i -t -u admin --workdir /workspaces/isaac_ros-dev $CONTAINER_NAME /bin/bash $@
-    exit 0
-fi
+## Re-use existing container.
+#if [ "$(docker ps -a --quiet --filter status=running --filter name=$CONTAINER_NAME)" ]; then
+#    echo "Attaching to running container: $CONTAINER_NAME"
+#    docker exec -i -t -u admin --workdir /workspaces/isaac_ros-dev $CONTAINER_NAME /bin/bash $@
+#    exit 0
+#fi
 
 IMAGE_KEY=ros2_humble
 if [[ ! -z "${CONFIG_IMAGE_KEY}" ]]; then
@@ -61,7 +61,7 @@ if [[ ! -z "${IMAGE_KEY}" ]]; then
     fi
 fi
 
-print_info "Building $BASE_IMAGE_KEY base as image: $BASE_NAME using key $BASE_IMAGE_KEY"
+#print_info "Building $BASE_IMAGE_KEY base as image: $BASE_NAME using key $BASE_IMAGE_KEY"
 
 # build isaac_common base image
 $ROOT_SRC_DIRECTORY/isaac_ros_common/scripts/build_base_image.sh $BASE_IMAGE_KEY $BASE_NAME '' '' ''
@@ -71,4 +71,4 @@ echo "---------------------------"
 cd $ROOT_SRC_DIRECTORY/..
 echo "building sm_isaac_exploration base image"
 # build sm_isaac_exploration image
-docker build -t smacc2_isaac -f src/sm_isaac_exploration/docker/Dockerfile .
+docker build -t smacc2_isaac -f src/sm_isaac_exploration/docker/Dockerfile --build-arg architecture_=aarch64 --progress=plain .

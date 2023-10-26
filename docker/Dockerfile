@@ -1,4 +1,6 @@
-FROM isaac_ros_dev-x86_64:latest
+ARG architecture_
+FROM isaac_ros_dev-${architecture_}:latest
+#FROM isaac_ros_dev-x86_64:latest
 
 RUN sudo apt-get update && \
     sudo apt-get install -y xterm && \
