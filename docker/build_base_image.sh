@@ -71,4 +71,5 @@ echo "---------------------------"
 cd $ROOT_SRC_DIRECTORY/..
 echo "building sm_isaac_exploration base image"
 # build sm_isaac_exploration image
-docker build -t smacc2_isaac -f src/sm_isaac_exploration/docker/Dockerfile --build-arg architecture_=aarch64 --progress=plain .
+ARCH=$(uname -m)
+docker build -t smacc2_isaac -f src/sm_isaac_exploration/docker/Dockerfile --build-arg architecture_=$ARCH --progress=plain .

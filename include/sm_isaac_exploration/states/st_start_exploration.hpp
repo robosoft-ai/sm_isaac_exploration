@@ -27,7 +27,7 @@ using namespace smacc2::default_events;
 using smacc2::client_behaviors::CbSleepFor;
 using namespace std::chrono_literals;
 using cl_rrt_explore_assigner::CbStartExploration;
-using smacc2::client_behaviors::CbRosLaunch2;
+// using smacc2::client_behaviors::CbRosLaunch2;
 
 // STATE DECLARATION
 struct StLaunchExploration
@@ -46,9 +46,10 @@ struct StLaunchExploration
   // STATE FUNCTIONS
   static void staticConfigure() {
     // configure_orthogonal<OrPerception, CbRosLaunch2>("sm_isaac_exploration","isaac_ros_apriltag_isaac_sim_pipeline.launch.py",smacc2::client_behaviors::RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME);
-    configure_orthogonal<OrAssigner, CbRosLaunch2>("rrt_exploration", "simple.launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME);
+    // configure_orthogonal<OrNavigation, CbRosLaunch2>("sm_isaac_exploration", "slam_launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
+    configure_orthogonal<OrAssigner, CbRosLaunch2>("rrt_exploration", "simple.launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
     
-    configure_orthogonal<OrAssigner, CbSleepFor>(10s);
+    configure_orthogonal<OrAssigner, CbSleepFor>(30s);
     configure_orthogonal<OrAssigner, CbWaitTopic>("/filtered_points");
 
     

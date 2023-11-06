@@ -39,36 +39,12 @@ using namespace smacc2;
 using namespace client_bases;
 using namespace std::chrono_literals;
 
-class OrNavigation : public smacc2::Orthogonal<OrNavigation> {
+class OrSlam : public smacc2::Orthogonal<OrSlam> {
 public:
   void onInitialize() override {
-    auto nav2zClient = this->createClient<ClNav2Z>();
 
     auto rosLaunchClient = this->createClient<ClRosLaunch2>();
 
-    // create pose component
-    nav2zClient->createComponent<cl_nav2z::Pose>();
-
-    // create planner switcher
-    nav2zClient->createComponent<CpPlannerSwitcher>();
-
-    // create goal checker switcher
-    nav2zClient->createComponent<cl_nav2z::CpGoalCheckerSwitcher>();
-
-    // create odom tracker
-    nav2zClient->createComponent<cl_nav2z::odom_tracker::CpOdomTracker>();
-
-    // create odom tracker
-    nav2zClient->createComponent<cl_nav2z::CpSlamToolbox>();
-
-    // create waypoints navigator component
-    auto waypointsNavigator =
-        nav2zClient->createComponent<CpWaypointNavigator>();
-
-    // nav2zClient->createComponent<sm_isaac_exploration::CpUEPose>("/ue_ros/map_origin_entity_state");
-
-    /*auto waypointsNavigator = */
-    // nav2zClient->createComponent<::cl_nav2z::CpWaypointNavigatorBase>();
   }
 };
 } // namespace sm_isaac_exploration

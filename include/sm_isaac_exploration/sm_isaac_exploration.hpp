@@ -18,8 +18,10 @@
  *
  ******************************************************************************************************************/
 
-#include <smacc2/client_behaviors/cb_sleep_for.hpp>
+
 #include <smacc2/smacc.hpp>
+#include <smacc2/client_behaviors/cb_sleep_for.hpp>
+#include <smacc2/client_behaviors/cb_ros_stop_2.hpp>
 
 #include <lifecyclenode_client/client_behaviors/cb_deactivate.hpp>
 #include <lifecyclenode_client/lifecyclenode_client.hpp>
@@ -69,6 +71,8 @@
 #include <sm_isaac_exploration/orthogonals/or_navigation.hpp>
 #include <sm_isaac_exploration/orthogonals/or_perception.hpp>
 #include <sm_isaac_exploration/orthogonals/or_lifecyclenode.hpp>
+#include <sm_isaac_exploration/orthogonals/or_slam.hpp>
+#include <sm_isaac_exploration/orthogonals/or_localization.hpp>
 
 using namespace cl_nav2z;
 using namespace smacc2::state_reactors;
@@ -76,6 +80,7 @@ using namespace smacc2::state_reactors;
 namespace sm_isaac_exploration {
 // STATE FORWARD DECLARATIONS
 class StAcquireSensors;
+class StRecoveryNav2;
 class StNavigateWarehouseWaypointsX;
 class StLaunchExploration;
 class StSetExplorationArea;
@@ -140,6 +145,8 @@ struct SmIsaacExploration
     this->createOrthogonal<OrAssigner>();
     this->createOrthogonal<OrPerception>();
     this->createOrthogonal<OrKeyboard>();
+    this->createOrthogonal<OrSlam>();
+    this->createOrthogonal<OrLocalization>();
     this->createOrthogonal<OrLifecycleNode>();
   }
 };
@@ -160,6 +167,7 @@ struct SmIsaacExploration
 
 // STATES
 #include <sm_isaac_exploration/states/st_acquire_sensors.hpp>
+#include <sm_isaac_exploration/states/st_recovery_nav2.hpp>
 #include <sm_isaac_exploration/states/st_exploration_point_spinning.hpp>
 #include <sm_isaac_exploration/states/st_explore_next_point.hpp>
 #include <sm_isaac_exploration/states/st_final_state.hpp>

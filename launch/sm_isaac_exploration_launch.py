@@ -43,6 +43,7 @@ def generate_launch_description():
     use_namespace = LaunchConfiguration("use_namespace")
     map_yaml_file = LaunchConfiguration("map")
     use_sim_time = LaunchConfiguration("use_sim_time")
+    active_slam_sel = LaunchConfiguration("active_slam_sel")
 
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
@@ -83,6 +84,12 @@ def generate_launch_description():
 
     declare_slam_cmd = DeclareLaunchArgument(
         "slam", default_value="True", description="Whether run a SLAM"
+    )
+
+    declare_active_slam_sel = DeclareLaunchArgument(  # Añadido para desactivar slam o alternativa
+        "active_slam_sel",
+        default_value="False",
+        description="Active selection of slam or alternative mode",
     )
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -195,22 +202,23 @@ def generate_launch_description():
     #     }.items(),
     # )
 
-    carter_cmd = IncludeLaunchDescription(
-        # PythonLaunchDescriptionSource(os.path.join(sm_isaac_exploration_launch_dir, "carter_navigation.launch.py")),
-        PythonLaunchDescriptionSource(
-            os.path.join(sm_isaac_exploration_launch_dir, "carter_navigation_rtx.launch.py")
-        ),
-        launch_arguments={
-            "namespace": namespace,
-            "use_namespace": use_namespace,
-            "autostart": autostart,
-            "params_file": params_file,
-            "slam": slam,
-            "map": map_yaml_file,
-            "use_sim_time": use_sim_time,
-            "default_nav_to_pose_bt_xml": default_nav_to_pose_bt_xml,
-        }.items(),
-    )
+    # carter_cmd = IncludeLaunchDescription(
+    #     # PythonLaunchDescriptionSource(os.path.join(sm_isaac_exploration_launch_dir, "carter_navigation.launch.py")),
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(sm_isaac_exploration_launch_dir, "carter_navigation_rtx.launch.py")
+    #     ),
+    #     launch_arguments={
+    #         "namespace": namespace,
+    #         "use_namespace": use_namespace,
+    #         "autostart": autostart,
+    #         "params_file": params_file,
+    #         "slam": slam,
+    #         "active_slam_sel": active_slam_sel,
+    #         "map": map_yaml_file,
+    #         "use_sim_time": use_sim_time,
+    #         "default_nav_to_pose_bt_xml": default_nav_to_pose_bt_xml,
+    #     }.items(),
+    # )
 
     sm_isaac_exploration_node = Node(
         package="sm_isaac_exploration",
@@ -271,13 +279,14 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
 
     ld.add_action(sm_isaac_exploration_node)
+    ld.add_action(declare_active_slam_sel)
     # ld.add_action(static_transform_publisher)
     # ld.add_action(gt_transform_publisher)
 
     # # # Add the actions to launch all of the navigation nodes
     # ld.add_action(start_robot_state_publisher_cmd)
     # ld.add_action(rviz_cmd)
-    ld.add_action(carter_cmd)
+    # ld.add_action(carter_cmd)
     ld.add_action(keyboard_client_node)
 
     return ld

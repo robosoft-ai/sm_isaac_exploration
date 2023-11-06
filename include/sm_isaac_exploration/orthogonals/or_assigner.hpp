@@ -39,8 +39,7 @@ public:
         smacc2::components::CpTopicPublisher<geometry_msgs::msg::PointStamped>>(
         "/clicked_point");
 
-    // this->createClient<smacc2::client_bases::ClRosLaunch>( "rrt_exploration",
-    // "simple.launch.py");
+    this->createClient<smacc2::client_bases::ClRosLaunch2>();
   }
 };
 } // namespace sm_isaac_exploration

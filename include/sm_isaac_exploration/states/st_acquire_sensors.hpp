@@ -23,6 +23,7 @@
 #include <smacc2/smacc.hpp>
 #include <smacc2/client_behaviors/cb_wait_action_server.hpp>
 #include <smacc2/client_behaviors/cb_wait_topic.hpp>
+#include <smacc2/client_behaviors/cb_ros_launch_2.hpp>
 
 namespace sm_isaac_exploration {
 using namespace std::chrono_literals;
@@ -32,6 +33,7 @@ using smacc2::client_behaviors::CbSleepFor;
 using smacc2::client_behaviors::CbWaitActionServer;
 using smacc2::client_behaviors::CbWaitTopic;
 using cl_nav2z::CbWaitNav2Nodes;
+using smacc2::client_behaviors::CbRosLaunch2;
 
 // STATE DECLARATION
 struct StAcquireSensors
@@ -48,7 +50,9 @@ struct StAcquireSensors
       Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StLaunchExploration,
                  ON_SENSORS_AVAILABLE>,
 
-      Transition<EvGlobalError, MsIsaacExplorationRecoveryMode>
+      Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StRecoveryNav2, SUCCESS>,
+
+      Transition<EvGlobalError, MsIsaacExplorationRecoveryMode>      
       >
       reactions;
 
@@ -56,9 +60,11 @@ struct StAcquireSensors
   static void staticConfigure() 
   {
     configure_orthogonal<OrNavigation, CbActiveStop>();
+    configure_orthogonal<OrSlam, CbRosLaunch2>("sm_isaac_exploration", "slam_launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
+    configure_orthogonal<OrNavigation, CbRosLaunch2>("sm_isaac_exploration", "carter_navigation_rtx.launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
     configure_orthogonal<OrNavigation, CbWaitActionServer>(20s);
     configure_orthogonal<OrAssigner, CbWaitNav2Nodes>();
-    // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
+    configure_orthogonal<OrNavigation, CbSleepFor>(25s);
 
     // Create State Reactor
     auto srAllSensorsReady = static_createStateReactor<

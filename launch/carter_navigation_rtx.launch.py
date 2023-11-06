@@ -19,6 +19,10 @@ def generate_launch_description():
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="True")
 
+    active_slam_sel = LaunchConfiguration("active_slam_sel", default="False")
+
+    slam = LaunchConfiguration("slam", default="True")
+
     map_dir = LaunchConfiguration(
         "map",
         default=os.path.join(
@@ -52,6 +56,14 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            DeclareLaunchArgument(  # Añadido para desactivar slam o alternativa
+                "active_slam_sel",
+                default_value="False",
+                description="Active selection of slam or alternative mode",
+            ),
+            DeclareLaunchArgument(
+                "map", default_value=map_dir, description="Full path to map file to load"
+            ),
             DeclareLaunchArgument(
                 "map", default_value=map_dir, description="Full path to map file to load"
             ),
@@ -62,7 +74,7 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument(
                 "use_sim_time",
-                default_value="true",
+                default_value="True",
                 description="Use simulation (Omniverse Isaac Sim) clock if true",
             ),
             DeclareLaunchArgument(
@@ -74,6 +86,7 @@ def generate_launch_description():
                 ),
                 description="Full path to the behavior tree xml file to use",
             ),
+            DeclareLaunchArgument("slam", default_value="True", description="Whether run a SLAM"),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     os.path.join(isaac_exploration_launch_dir, "rviz_launch.py")
@@ -90,6 +103,8 @@ def generate_launch_description():
                 ),
                 launch_arguments={
                     "map": map_dir,
+                    "slam": slam,
+                    "active_slam_sel": active_slam_sel,
                     "use_sim_time": use_sim_time,
                     "params_file": param_dir,
                 }.items(),

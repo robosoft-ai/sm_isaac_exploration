@@ -28,6 +28,7 @@ using namespace std::chrono_literals;
 using cl_nav2z::CbPauseSlam;
 using cl_nav2z::CbNavigateGlobalPosition;
 using smacc2::client_behaviors::CbSleepFor;
+using smacc2::client_behaviors::CbRosStop2;
 
 // STATE DECLARATION
 struct StFinalReturnBackToOrigin
@@ -38,6 +39,7 @@ struct StFinalReturnBackToOrigin
   // TRANSITION TABLE
   typedef mpl::list<
       Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StFinalMapSaving, SUCCESS>
+      // Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StFinalMapSaving, SUCCESS>
       // Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, SS2::SsRadialPattern2, SUCCESS>
       >
       reactions;
@@ -46,7 +48,8 @@ struct StFinalReturnBackToOrigin
   // STATE FUNCTIONS
   static void staticConfigure() {
     configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(); // parameterless navigates to 0,0,0
-    // configure_orthogonal<OrNavigation, CbPauseSlam>();
+    // configure_orthogonal<OrNavigation, CbSleepFor>(20s);
+    // configure_orthogonal<OrNavigation, CbRosStop2>();
   }
 };
 } // namespace sm_isaac_exploration

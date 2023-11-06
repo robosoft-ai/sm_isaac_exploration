@@ -25,6 +25,7 @@
 namespace sm_isaac_exploration {
 using namespace smacc2::default_events;
 using smacc2::client_behaviors::CbSleepFor;
+using smacc2::client_behaviors::CbRosStop2;
 using cl_lifecyclenode::CbDeactivate;
 using namespace std::chrono_literals;
 
@@ -35,25 +36,29 @@ struct StFinalMapSaving
 
   // TRANSITION TABLE
   typedef mpl::list<
-        Transition<EvCbSuccess<CbSaveSlamMap, OrNavigation>, SS2::SsRadialPattern2, SUCCESS>,
-        Transition<EvCbSuccess<CbSleepFor, OrNavigation>, SS2::SsRadialPattern2, SUCCESS>
-
+        // Transition<EvCbSuccess<CbSaveSlamMap, OrNavigation>, SS2::SsRadialPattern2, SUCCESS>,
+        // Transition<EvCbSuccess<CbSleepFor, OrNavigation>, SS2::SsRadialPattern2, SUCCESS>,
+        Transition<EvCbSuccess<CbSleepFor, OrLocalization>, SS2::SsRadialPattern2, SUCCESS>
                     >
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {
     configure_orthogonal<OrNavigation, CbActiveStop>();
-    // configure_orthogonal<OrNavigation, CbRosLaunch2>(
-    //     "isaac_ros_occupancy_grid_localizer",
-    //     "isaac_ros_occupancy_grid_localizer_nav2.launch.py",
-        // smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
+    configure_orthogonal<OrNavigation, CbSaveSlamMap>();
+    configure_orthogonal<OrNavigation, CbSleepFor>(10s);
+    configure_orthogonal<OrSlam, CbRosStop2>();
+    configure_orthogonal<OrNavigation, CbSleepFor>(10s);
     // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
     // configure_orthogonal<OrNavigation, CbPauseSlam>();
     // configure_orthogonal<OrLifecycleNode, CbDeactivate>();
-    configure_orthogonal<OrNavigation, CbSaveSlamMap>();
+    // configure_orthogonal<OrNavigation, CbSleepFor>(15s);
     configure_orthogonal<OrNavigation, CbSleepFor>(10s);
-
+    configure_orthogonal<OrLocalization, CbRosLaunch2>(
+        "sm_isaac_exploration",
+        "isaac_ros_occupancy_grid_localizer_no_nav2.launch.py",
+        smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
+    configure_orthogonal<OrLocalization, CbSleepFor>(15s);
   }
 
   void runtimeConfigure() {}
