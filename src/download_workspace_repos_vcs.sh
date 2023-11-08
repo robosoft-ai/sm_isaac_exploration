@@ -44,17 +44,17 @@ clone_repository() {
 
 # Call the function to clone repositories and run git-lfs pull
 clone_repositories() {
-    clone_repository "rrt_exploration" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/Intelligent-Behavior-Robots/rrt_exploration.git" "humble"
-    clone_repository "SMACC2" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/robosoft-ai/SMACC2.git" "feature/humble_isaac_improvements"
-    
-    clone_repository "isaac_ros_common" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_common.git" "main"
-    clone_repository "isaac_ros_dnn_inference" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_dnn_inference.git" "main"
-    clone_repository "isaac_ros_image_pipeline" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_image_pipeline.git" "main"
-    clone_repository "isaac_ros_map_localization" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_map_localization.git" "main"
-    clone_repository "isaac_ros_nitros" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_nitros.git" "main"
-    clone_repository "isaac_ros_object_detection" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_object_detection.git" "main"
-    clone_repository "isaac_ros_visual_slam" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_visual_slam.git" "main"
-    clone_repository "isaac_ros_apriltag" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_apriltag.git" "main"
+    clone_repository "rrt_exploration" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/robosoft-ai/rrt_exploration.git" "main"
+    clone_repository "SMACC2" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/robosoft-ai/SMACC2.git" "feature/humble_isaac_improvements"    
+    clone_repository "isaac_ros_common" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_common.git" "v2.0.0"
+    clone_repository "isaac_ros_dnn_inference" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_dnn_inference.git" "v2.0.0"
+    clone_repository "isaac_ros_image_pipeline" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_image_pipeline.git" "v2.0.0"
+    # clone_repository "isaac_ros_map_localization" "git" "https://github.com/pabloinigoblasco/isaac_ros_map_localization.git" "feature/tf_support"
+    clone_repository "isaac_ros_map_localization" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_map_localization.git" "v2.0.0"
+    clone_repository "isaac_ros_nitros" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_nitros.git" "v2.0.0"
+    clone_repository "isaac_ros_object_detection" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_object_detection.git" "v2.0.0"
+    clone_repository "isaac_ros_visual_slam" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_visual_slam.git" "v2.0.0"
+    clone_repository "isaac_ros_apriltag" "git" "https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/NVIDIA-ISAAC-ROS/isaac_ros_apriltag.git" "v2.0.0"
     clone_repository "pointcloud_to_laserscan" "git" "https://github.com/ros-perception/pointcloud_to_laserscan.git" "humble"
 
 }

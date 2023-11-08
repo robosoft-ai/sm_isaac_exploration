@@ -34,8 +34,8 @@ def generate_launch_description():
     sm_isaac_exploration_dir = get_package_share_directory("sm_isaac_exploration")
     sm_isaac_exploration_launch_dir = os.path.join(sm_isaac_exploration_dir, "launch")
 
-    nav_dir = get_package_share_directory("carter_navigation")
-    nav_dir_launch = os.path.join(nav_dir, "launch")
+    # nav_dir = get_package_share_directory("carter_navigation")
+    # nav_dir_launch = os.path.join(nav_dir, "launch")
 
     # Create the launch configuration variables
     slam = LaunchConfiguration("slam")

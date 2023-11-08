@@ -1,0 +1,16 @@
+/src/isaac_ros_common/
+/src/isaac_ros_dnn_inference/
+/src/isaac_ros_image_pipeline/
+/src/isaac_ros_map_localization/
+/src/isaac_ros_nitros/
+/src/isaac_ros_object_detection/
+/src/isaac_ros_visual_slam/
+/src/rrt_exploration/
+/src/geographic_info/
+/src/isaac_ros_apriltag/
+/src/pointcloud_to_laserscan/
+/src/SMACC2/
+/src/.vscode/
+/build
+/install
+/log
