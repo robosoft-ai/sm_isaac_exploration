@@ -153,8 +153,8 @@ controller_server:
       stateful: True
     backward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.35 #0.9
-      yaw_goal_tolerance: 0.05 #0.05
+      xy_goal_tolerance: 0.7 #0.9
+      yaw_goal_tolerance: 0.1 #0.05
       stateful: True
     forward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
