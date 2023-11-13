@@ -35,12 +35,17 @@ struct StLaunchExploration
   using SmaccState::SmaccState;
 
   struct STARTING_EXPLORATION : SUCCESS {};
+  struct SrTimeTopic;
   // TRANSITION TABLE
   typedef mpl::list<
       // Transition<EvCbSuccess<CbSleepFor, OrAssigner>, StSetExplorationArea,
-      // STARTING_EXPLORATION>,
-      Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>,
-                 StSetExplorationArea, STARTING_EXPLORATION>>
+      // STARTING_EXPLORATION>
+      // Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>,
+      //            StSetExplorationArea, STARTING_EXPLORATION>
+      Transition<EvAllGo<SrAllEventsGo, SrTimeTopic>, StSetExplorationArea,
+                 STARTING_EXPLORATION>
+                 
+      >
       reactions;
 
   // STATE FUNCTIONS
@@ -49,12 +54,21 @@ struct StLaunchExploration
     // configure_orthogonal<OrNavigation, CbRosLaunch2>("sm_isaac_exploration", "slam_launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
     configure_orthogonal<OrAssigner, CbRosLaunch2>("rrt_exploration", "simple.launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
     
-    configure_orthogonal<OrAssigner, CbSleepFor>(30s);
+    configure_orthogonal<OrAssigner, CbSleepFor>(5s);
     configure_orthogonal<OrAssigner, CbWaitTopic>("/filtered_points");
 
     
     // configure_orthogonal<OrNavigation, CbPureSpinning>(M_PI*2);
     configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0.5, 0, 0);
+
+    auto srTimeTopic = static_createStateReactor<
+        SrAllEventsGo,
+        smacc2::state_reactors::EvAllGo<SrAllEventsGo, SrTimeTopic>,
+        mpl::list<
+            EvCbSuccess<CbSleepFor, OrAssigner>,
+            EvCbSuccess<CbWaitTopic, OrAssigner>,
+            EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>
+            >>();
   }
 };
 } // namespace sm_isaac_exploration

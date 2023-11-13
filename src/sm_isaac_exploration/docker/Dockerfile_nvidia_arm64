@@ -12,7 +12,7 @@ RUN sudo apt-get update && \
 
 ENV USER=admin
 WORKDIR /workspaces/isaac_ros-dev
-RUN sudo chown -R admin:admin /workspaces/isaac_ros-dev
+RUN sudo chown  admin:admin /workspaces/isaac_ros-dev
 
 # # COPY --chown=$USER:$USER . /workspaces/isaac_ros-dev
 

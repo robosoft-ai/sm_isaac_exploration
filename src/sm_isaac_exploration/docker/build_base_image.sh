@@ -72,4 +72,11 @@ cd $ROOT_SRC_DIRECTORY/..
 echo "building sm_isaac_exploration base image"
 # build sm_isaac_exploration image
 ARCH=$(uname -m)
-docker build -t smacc2_isaac -f src/sm_isaac_exploration/docker/Dockerfile --build-arg architecture_=$ARCH --progress=plain .
+echo "arch: $ARCH"
+if [ $ARCH == "aarch64" ]; then
+    sudo mount --bind / src/root_mount/
+    docker build -t smacc2_isaac -f src/sm_isaac_exploration/docker/Dockerfile_nvidia_arm64 --build-arg architecture_=$ARCH --progress=plain .
+    sudo umount src/root_mount/
+else
+    docker build -t smacc2_isaac -f src/sm_isaac_exploration/docker/Dockerfile --build-arg architecture_=$ARCH --progress=plain .
+fi
