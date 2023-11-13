@@ -62,9 +62,9 @@ struct StAcquireSensors
     configure_orthogonal<OrNavigation, CbActiveStop>();
     configure_orthogonal<OrSlam, CbRosLaunch2>("sm_isaac_exploration", "slam_launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
     configure_orthogonal<OrNavigation, CbRosLaunch2>("sm_isaac_exploration", "carter_navigation_rtx.launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
-    configure_orthogonal<OrNavigation, CbWaitActionServer>(20s);
+    configure_orthogonal<OrNavigation, CbWaitActionServer>(10s);
     configure_orthogonal<OrAssigner, CbWaitNav2Nodes>();
-    configure_orthogonal<OrNavigation, CbSleepFor>(25s);
+    configure_orthogonal<OrNavigation, CbSleepFor>(12s);
 
     // Create State Reactor
     auto srAllSensorsReady = static_createStateReactor<

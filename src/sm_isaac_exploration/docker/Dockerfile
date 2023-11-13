@@ -11,47 +11,20 @@ RUN sudo apt-get update && \
 
 
 ENV USER=admin
+USER $USER
 WORKDIR /workspaces/isaac_ros-dev
-RUN sudo chown -R admin:admin /workspaces/isaac_ros-dev
 
-# # COPY --chown=$USER:$USER . /workspaces/isaac_ros-dev
+COPY --chown=$USER:$USER . /workspaces/isaac_ros-dev
 
-COPY --chown=$USER:$USER ./src/isaac_ros_apriltag /workspaces/isaac_ros-dev/src/isaac_ros_apriltag
-COPY --chown=$USER:$USER ./src/isaac_ros_common /workspaces/isaac_ros-dev/src/isaac_ros_common
-COPY --chown=$USER:$USER ./src/isaac_ros_dnn_inference /workspaces/isaac_ros-dev/src/isaac_ros_dnn_inference
-COPY --chown=$USER:$USER ./src/isaac_ros_image_pipeline /workspaces/isaac_ros-dev/src/isaac_ros_image_pipeline
-COPY --chown=$USER:$USER ./src/isaac_ros_map_localization /workspaces/isaac_ros-dev/src/isaac_ros_map_localization
-COPY --chown=$USER:$USER ./src/isaac_ros_nitros /workspaces/isaac_ros-dev/src/isaac_ros_nitros
-COPY --chown=$USER:$USER ./src/isaac_ros_object_detection /workspaces/isaac_ros-dev/src/isaac_ros_object_detection
-COPY --chown=$USER:$USER ./src/isaac_ros_visual_slam /workspaces/isaac_ros-dev/src/isaac_ros_visual_slam
-COPY --chown=$USER:$USER ./src/pointcloud_to_laserscan /workspaces/isaac_ros-dev/src/pointcloud_to_laserscan
-COPY --chown=$USER:$USER ./src/rrt_exploration /workspaces/isaac_ros-dev/src/rrt_exploration
-COPY --chown=$USER:$USER ./src/sm_isaac_exploration /workspaces/isaac_ros-dev/src/sm_isaac_exploration
-COPY --chown=$USER:$USER ./src/SMACC2 /workspaces/isaac_ros-dev/src/SMACC2
+RUN mkdir -p $HOME/.ros
 
-COPY --chown=root:root ./src/root_mount/usr/bin/tegrastats /usr/bin/tegrastats
-COPY --chown=root:root ./src/root_mount/tmp/argus_socket /tmp/argus_socket
-COPY --chown=root:root ./src/root_mount/usr/local/cuda-11.4/targets/aarch64-linux/lib/ /usr/local/cuda-11.4/targets/aarch64-linux/lib/
-# COPY --chown=root:root ./src/root_mount/usr/local/cuda-11.4/targets/aarch64-linux/lib/libcusolver.so.11 /usr/local/cuda-11.4/targets/aarch64-linux/lib/libcusolver.so.11
-# COPY --chown=root:root ./src/root_mount/usr/local/cuda-11.4/targets/aarch64-linux/lib/libcusparse.so.11 /usr/local/cuda-11.4/targets/aarch64-linux/lib/libcusparse.so.11
-# COPY --chown=root:root ./src/root_mount/usr/local/cuda-11.4/targets/aarch64-linux/lib/libcurand.so.10 /usr/local/cuda-11.4/targets/aarch64-linux/lib/libcurand.so.10
-# COPY --chown=root:root ./src/root_mount/usr/local/cuda-11.4/targets/aarch64-linux/lib/libnvToolsExt.so /usr/local/cuda-11.4/targets/aarch64-linux/lib/libnvToolsExt.so
-# COPY --chown=root:root ./src/root_mount/usr/local/cuda-11.4/targets/aarch64-linux/lib/libcupti.so.11.4 /usr/local/cuda-11.4/targets/aarch64-linux/lib/libcupti.so.11.4
-# COPY --chown=root:root ./src/root_mount/usr/local/cuda-11.4/targets/aarch64-linux/lib/libcudla.so.1 /usr/local/cuda-11.4/targets/aarch64-linux/lib/libcudla.so.1
-COPY --chown=root:root ./src/root_mount/usr/local/cuda-11.4/targets/aarch64-linux/include/nvToolsExt.h /usr/local/cuda-11.4/targets/aarch64-linux/include/nvToolsExt.h
-COPY --chown=root:root ./src/root_mount/usr/lib/aarch64-linux-gnu/tegra /usr/lib/aarch64-linux-gnu/tegra
-COPY --chown=root:root ./src/root_mount/usr/src/jetson_multimedia_api /usr/src/jetson_multimedia_api
-COPY --chown=root:root ./src/root_mount/opt/nvidia/nsight-systems-cli /opt/nvidia/nsight-systems-cli
-COPY --chown=root:root ./src/root_mount/opt/nvidia/vpi2 /opt/nvidia/vpi2
-COPY --chown=root:root ./src/root_mount/usr/share/vpi2 /usr/share/vpi2
-COPY --chown=root:root ./src/root_mount/usr/lib/aarch64-linux-gnu/tegra-egl/libEGL_nvidia.so.0 /usr/lib/aarch64-linux-gnu/tegra-egl/libEGL_nvidia.so.0
+RUN bash -c "pip install -r ./src/sm_isaac_exploration/docker/requirements.txt"
 
 # Download detect model
-# RUN bash -c  "cd /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_detectnet && \
-#     ./scripts/setup_model.sh --height 720 --width 1280 --config-file resources/isaac_sim_config.pbtxt"
+RUN bash -c  "cd /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_detectnet && \
+    ./scripts/setup_model.sh --height 720 --width 1280 --config-file resources/isaac_sim_config.pbtxt"
 
 # ENTRYPOINT [ "/bin/bash" ]
 
-# RUN bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install --packages-up-to sm_isaac_exploration --cmake-args -DCMAKE_BUILD_TYPE=Debug"
-RUN bash -c "source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev/ && colcon build --symlink-install --packages-up-to sm_isaac_exploration --cmake-args -DCMAKE_BUILD_TYPE=Debug"
+RUN bash -c "source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev/ && colcon build --symlink-install --packages-up-to sm_isaac_exploration --cmake-args -DCMAKE_BUILD_TYPE=Release"
 ENTRYPOINT [ "/bin/bash" ]

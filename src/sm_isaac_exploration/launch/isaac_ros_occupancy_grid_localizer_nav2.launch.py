@@ -69,12 +69,10 @@ def generate_launch_description():
         "rviz",
         "isaac_sim_nav2.rviz",
     )
-    
-    bringup_dir = get_package_share_directory(
-        "nav2_bringup"
-    ) 
+
+    bringup_dir = get_package_share_directory("nav2_bringup")
     launch_dir = os.path.join(bringup_dir, "launch")
-    
+
     declare_autostart_cmd = DeclareLaunchArgument(
         "autostart", default_value="true", description="Automatically startup the nav2 stack"
     )
@@ -109,22 +107,20 @@ def generate_launch_description():
         }.items(),
         condition=IfCondition(LaunchConfiguration("run_nav2")),
     )
-    
-    
-    
-    amcl_launch = IncludeLaunchDescription(  
-                PythonLaunchDescriptionSource(os.path.join(launch_dir, "localization_launch.py")),
-                launch_arguments={
-                    "namespace": "",
-                    "map": LaunchConfiguration("map_file"),
-                    "use_sim_time": LaunchConfiguration("use_sim_time"),
-                    "autostart": LaunchConfiguration("autostart"),
-                    "params_file": LaunchConfiguration("params_file"),
-                    "use_composition": LaunchConfiguration("use_composition"),
-                    "use_respawn": LaunchConfiguration("use_respawn"),
-                    "container_name": "nav2_container",
-                }.items(),
-            )
+
+    amcl_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(launch_dir, "localization_launch.py")),
+        launch_arguments={
+            "namespace": "",
+            "map": LaunchConfiguration("map_file"),
+            "use_sim_time": LaunchConfiguration("use_sim_time"),
+            "autostart": LaunchConfiguration("autostart"),
+            "params_file": LaunchConfiguration("params_file"),
+            "use_composition": LaunchConfiguration("use_composition"),
+            "use_respawn": LaunchConfiguration("use_respawn"),
+            "container_name": "nav2_container",
+        }.items(),
+    )
 
     occupancy_grid_localizer_node = ComposableNode(
         package="isaac_ros_occupancy_grid_localizer",
@@ -145,7 +141,7 @@ def generate_launch_description():
         package="isaac_ros_pointcloud_utils",
         plugin="nvidia::isaac_ros::pointcloud_utils::LaserScantoFlatScanNode",
         name="laserscan_to_flatscan",
-        parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}]#,
+        parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}]  # ,
         # remappings=[("flatscan", "/flatscan_localization")],
     )
 
@@ -222,7 +218,7 @@ def generate_launch_description():
             declare_autostart_cmd,
             declare_use_composition_cmd,
             declare_use_respawn_cmd,
-            amcl_launch
+            amcl_launch,
         ]
     )
 

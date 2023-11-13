@@ -11,13 +11,14 @@ RUN sudo apt-get update && \
 
 
 ENV USER=admin
+USER $USER
 WORKDIR /workspaces/isaac_ros-dev
-
-RUN if [ ${architecture_} == "aarch64" ]; then 
 
 COPY --chown=$USER:$USER . /workspaces/isaac_ros-dev
 
+RUN mkdir -p $HOME/.ros
 
+RUN bash -c "pip install -r ./src/sm_isaac_exploration/docker/requirements.txt"
 
 # Download detect model
 RUN bash -c  "cd /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_detectnet && \

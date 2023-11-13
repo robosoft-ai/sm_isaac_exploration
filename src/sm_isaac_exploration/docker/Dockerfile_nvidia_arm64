@@ -10,9 +10,18 @@ RUN sudo apt-get update && \
     sudo apt-get clean
 
 
+# ENV USER=admin
+# WORKDIR /workspaces/isaac_ros-dev
+
 ENV USER=admin
+USER $USER
 WORKDIR /workspaces/isaac_ros-dev
-RUN sudo chown  admin:admin /workspaces/isaac_ros-dev
+
+RUN mkdir -p $HOME/.ros
+
+# RUN sudo chown  admin:admin /workspaces/isaac_ros-dev
+
+# RUN sudo chown  $USER:$USER /workspaces/isaac_ros-dev
 
 # # COPY --chown=$USER:$USER . /workspaces/isaac_ros-dev
 

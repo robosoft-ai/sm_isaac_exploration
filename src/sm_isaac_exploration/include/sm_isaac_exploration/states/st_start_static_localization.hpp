@@ -47,7 +47,7 @@ struct StStartStaticLocalization
     // CbRosLaunch2>("isaac_ros_occupancy_grid_localizer",
     // "isaac_ros_occupancy_grid_localizer_nav2.launch.py",
     // smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
-    configure_orthogonal<OrNavigation, CbSleepFor>(2s);
+    configure_orthogonal<OrNavigation, CbSleepFor>(5s);
   }
 };
 } // namespace sm_isaac_exploration

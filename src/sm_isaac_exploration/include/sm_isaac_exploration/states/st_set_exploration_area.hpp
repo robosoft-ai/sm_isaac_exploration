@@ -38,16 +38,17 @@ struct StSetExplorationArea
   struct STARTING_EXPLORATION : SUCCESS {};
   // TRANSITION TABLE
   typedef mpl::list<Transition<EvCbSuccess<CbWaitActionServer, OrAssigner>,
-                               StExploreNextPoint, STARTING_EXPLORATION>,
-                    Transition<EvCbSuccess<CbSleepFor, OrAssigner>,
-                               StExploreNextPoint, STARTING_EXPLORATION>>
+                               StExploreNextPoint, STARTING_EXPLORATION>
+                    // Transition<EvCbSuccess<CbSleepFor, OrAssigner>,
+                    //            StExploreNextPoint, STARTING_EXPLORATION>
+                               >
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {
     configure_orthogonal<OrAssigner, CbStartExploration>();
-    configure_orthogonal<OrAssigner, CbWaitActionServer>(90s);
-    configure_orthogonal<OrAssigner, CbSleepFor>(60s);
+    configure_orthogonal<OrAssigner, CbWaitActionServer>(120s);
+    // configure_orthogonal<OrAssigner, CbSleepFor>(120s);
     configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0.0, 0, 0);
   }
 };

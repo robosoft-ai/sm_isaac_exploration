@@ -54,7 +54,7 @@ struct StLaunchExploration
     // configure_orthogonal<OrNavigation, CbRosLaunch2>("sm_isaac_exploration", "slam_launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
     configure_orthogonal<OrAssigner, CbRosLaunch2>("rrt_exploration", "simple.launch.py", smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
     
-    configure_orthogonal<OrAssigner, CbSleepFor>(5s);
+    configure_orthogonal<OrAssigner, CbSleepFor>(10s);
     configure_orthogonal<OrAssigner, CbWaitTopic>("/filtered_points");
 
     
