@@ -43,7 +43,8 @@ struct StLaunchExploration
       // Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>,
       //            StSetExplorationArea, STARTING_EXPLORATION>
       Transition<EvAllGo<SrAllEventsGo, SrTimeTopic>, StSetExplorationArea,
-                 STARTING_EXPLORATION>
+                 STARTING_EXPLORATION>,
+      Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StRecoveryNav2, ABORT>
                  
       >
       reactions;
@@ -59,7 +60,7 @@ struct StLaunchExploration
 
     
     // configure_orthogonal<OrNavigation, CbPureSpinning>(M_PI*2);
-    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0.5, 0, 0);
+    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0, 1, 0);
 
     auto srTimeTopic = static_createStateReactor<
         SrAllEventsGo,

@@ -85,6 +85,7 @@ class StNavigateWarehouseWaypointsX;
 class StLaunchExploration;
 class StSetExplorationArea;
 class StExploreNextPoint;
+class StExploreCheckPoint;
 class StExplorationPointSpinning;
 class StPauseSlam;
 class StStartStaticLocalization;
@@ -170,6 +171,7 @@ struct SmIsaacExploration
 #include <sm_isaac_exploration/states/st_recovery_nav2.hpp>
 #include <sm_isaac_exploration/states/st_exploration_point_spinning.hpp>
 #include <sm_isaac_exploration/states/st_explore_next_point.hpp>
+#include <sm_isaac_exploration/states/st_explore_check_point.hpp>
 #include <sm_isaac_exploration/states/st_final_state.hpp>
 #include <sm_isaac_exploration/states/st_navigate_to_apriltag_work_area.hpp>
 #include <sm_isaac_exploration/states/st_navigate_warehouse_waypoints.x.hpp>

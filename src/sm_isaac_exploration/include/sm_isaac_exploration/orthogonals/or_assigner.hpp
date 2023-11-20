@@ -24,6 +24,7 @@
 #include <sm_isaac_exploration/clients/cl_rrt_explore_assigner/cl_rrt_explore_assigner.hpp>
 #include <smacc2/client_base_components/cp_topic_publisher.hpp>
 #include <smacc2/client_bases/smacc_ros_launch_client_2.hpp>
+#include <sm_isaac_exploration/clients/cl_rrt_explore_assigner/components/cp_visited_points_counter.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace sm_isaac_exploration {
@@ -38,6 +39,8 @@ public:
     assignerclient->createComponent<
         smacc2::components::CpTopicPublisher<geometry_msgs::msg::PointStamped>>(
         "/clicked_point");
+
+    assignerclient->createComponent<cl_rrt_explore_assigner::CpVisitedPointsCounter>();
 
     this->createClient<smacc2::client_bases::ClRosLaunch2>();
   }
