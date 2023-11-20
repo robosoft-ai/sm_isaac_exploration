@@ -35,20 +35,25 @@ using cl_keyboard::CbDefaultKeyboardBehavior;
 using cl_nav2z::CbResumeSlam;
 using cl_rrt_explore_assigner::CbRrtExploreNextPoint;
 using smacc2::client_behaviors::CbSleepFor;
+using namespace cl_rrt_explore_assigner;
+// using namespace cl_rrt_explore_assigner::CpVisitedPointsCounter;
 
-struct EvExplorationFinished : sc::event<EvExplorationFinished> {};
+// struct EvExplorationFinished : sc::event<EvExplorationFinished> {};
 
 // STATE DECLARATION
 struct StExploreNextPoint
     : smacc2::SmaccState<StExploreNextPoint, MsIsaacExplorationRunMode> {
   using SmaccState::SmaccState;
+  // DECLARE CUSTOM OBJECT AND TRANSITION TAGS
+  // struct SrAcquireSensors;
+  // struct LAST_POINT_EXPLORED : SUCCESS {};
+  struct SrLastPointExplored;
   // TRANSITION TABLE
   typedef mpl::list<
       // Transition<EvCbSuccess<CbRrtExploreNextPoint, OrNavigation>, StExplorationPointSpinning, SUCCESS>,
       
-      Transition<EvCbSuccess<CbRrtExploreNextPoint, OrNavigation>, StExploreNextPoint, SUCCESS>,
+      Transition<EvCbSuccess<CbRrtExploreNextPoint, OrNavigation>, StExploreCheckPoint, SUCCESS>,
       Transition<EvCbFailure<CbRrtExploreNextPoint, OrNavigation>, StExploreNextPoint, ABORT>,
-      Transition<EvExplorationFinished, StFinalReturnBackToOrigin, SUCCESS>,
 
       Transition<cl_keyboard::EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>,StFinalReturnBackToOrigin, SUCCESS>,
       Transition<cl_keyboard::EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>,StExploreNextPoint, SUCCESS>,
@@ -58,34 +63,64 @@ struct StExploreNextPoint
 
   static int count_visited_states;
   const int EXPLORE_POINTS_COUNT = 50;
+  CpVisitedPointsCounter *visitedCount;
 
   // STATE FUNCTIONS
   static void staticConfigure() {
+    // visitedCount = CpVisitedPointsCounter::CpVisitedPointsCounter();
     configure_orthogonal<OrNavigation, CbRrtExploreNextPoint>();
     configure_orthogonal<OrPerception, CbDetectAprilTag>();
     configure_orthogonal<OrPerception, CbResumeSlam>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
+    // configure_orthogonal<OrAssigner, CpVisitedPointsCounter>();
+
+    // auto srAllPointsExplored = static_createStateReactor<
+    //     SrAllEventsGo,
+    //     smacc2::state_reactors::EvAllGo<SrAllEventsGo, SrLastPointExplored>,
+    //     mpl::list<
+    //         EvCbSuccess<CbRrtExploreNextPoint, OrNavigation>,
+    //         EvExplorationFinished
+    //         >>();
   }
 
   void runtimeConfigure() {}
 
   void onEntry() {
-    // if number of explorations > 50 post event
-    if (count_visited_states > EXPLORE_POINTS_COUNT) {
-      this->postEvent<EvExplorationFinished>();
-    }
+    // cl_rrt_explore_assigner::ClRrtExploreAssigner* assigner;
+    // this->requiresClient(assigner);
+    // // if number of explorations > 50 post event
+    // // if (count_visited_states > EXPLORE_POINTS_COUNT) {
+    // //   this->postEvent<EvExplorationFinished>();
+    // // }
+    // // int maxVisit;
+    // visitedCount = assigner->getComponent<CpVisitedPointsCounter>();
+    // visitedCount->getVisitedPoints();
+    // // if(getNode()->get_parameter("max_visited_points", maxVisit)){
+    // //   if(visitedCount->getVisitedPoints() >= maxVisit){
+    // //     visitedCount->postEvent<EvExplorationFinished>();
+    // //   }
+    // // }
+    // // if(visitedCount->getVisitedPoints() >= getNode()->get_parameter("max_visited_points")){}
   }
 
   void onExit(SUCCESS) {
-    count_visited_states++;
-    RCLCPP_INFO(getLogger(), "[StExploreNextPoint] visited states: %d/%d",
-                count_visited_states, EXPLORE_POINTS_COUNT);
+    // visitedCount->countVisitedPoint();
+    // // count_visited_states++;
+    // // int maxVisit;
+    // // getNode()->get_parameter("max_visited_points", maxVisit);
+    // auto maxint = 0;
+    // getNode()->get_parameter("max_visited_points", maxint);
 
-    cl_apriltag_detector::ClAprilTagDetector *cbtag;
-    requiresClient(cbtag);
+    // RCLCPP_INFO_STREAM(getLogger(), "[StExploreNextPoint] MAX FROM STATE: " << maxint);
 
-    RCLCPP_INFO(getLogger(), "[StExploreNextPoint] detected tags: %d",
-                cbtag->detectedAprilTagsMapPose_.size());
+    //  RCLCPP_FATAL(getLogger(), "[StExploreNextPoint] Visited states: %d/%d",
+    //              visitedCount->getVisitedPoints(), visitedCount->getMaximumVisitedPoints());
+
+    // // cl_apriltag_detector::ClAprilTagDetector *cbtag;
+    // // requiresClient(cbtag);
+
+    // // RCLCPP_INFO(getLogger(), "[StExploreNextPoint] detected tags: %d",
+    // //             cbtag->detectedAprilTagsMapPose_.size());
   }
 };
 } // namespace sm_isaac_exploration

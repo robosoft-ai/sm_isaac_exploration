@@ -42,6 +42,7 @@ struct StRecoveryNav2
   {
     configure_orthogonal<OrNavigation, CbRosStop2>();
     configure_orthogonal<OrSlam, CbRosStop2>();
+    configure_orthogonal<OrAssigner, CbRosStop2>();
     configure_orthogonal<OrNavigation, CbSleepFor>(5s);
     configure_orthogonal<OrSlam, CbSleepFor>(5s);
 

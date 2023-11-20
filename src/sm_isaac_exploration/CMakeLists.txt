@@ -22,7 +22,8 @@ ament_export_include_directories(include)
 ament_auto_add_executable(${PROJECT_NAME}_node
                           src/sm_isaac_exploration/sm_isaac_exploration.cpp
                           src/sm_isaac_exploration/clients/client_behaviors/nav2z_client/cb_active_stop.cpp
-                          src/sm_isaac_exploration/clients/client_behaviors/nav2z_client/cb_position_control_free_space.cpp)
+                          src/sm_isaac_exploration/clients/client_behaviors/nav2z_client/cb_position_control_free_space.cpp
+                          src/sm_isaac_exploration/clients/components/cl_rrt_explore_assigner/cp_visited_points_counter.cpp)
 
 
 
