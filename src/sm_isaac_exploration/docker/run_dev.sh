@@ -109,7 +109,7 @@ fi
 # PLATFORM=".imp.$(uname -m)"
 
 #*******IMAGE NAME*********
-BASE_NAME="smacc2_isaac"
+BASE_NAME="smacc2_isaac_exploration"
 CONTAINER_NAME="$BASE_NAME-container"
 
 # Remove any exited containers.
