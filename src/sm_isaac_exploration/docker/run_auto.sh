@@ -98,7 +98,7 @@ fi
 
 
 #*******IMAGE NAME*********
-BASE_NAME="smacc2_isaac_exploration"
+BASE_NAME="pibgeus/smacc2_isaac_exploration"
 CONTAINER_NAME="$BASE_NAME-container"
 
 # Remove any exited containers.
