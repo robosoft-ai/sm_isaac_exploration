@@ -75,8 +75,8 @@ ARCH=$(uname -m)
 echo "arch: $ARCH"
 if [ $ARCH == "aarch64" ]; then
     sudo mount --bind / src/root_mount/
-    docker build -t smacc2_isaac -f src/sm_isaac_exploration/docker/Dockerfile_nvidia_arm64 --build-arg architecture_=$ARCH --progress=plain .
+    docker build -t smacc2_isaac_exploration -f src/sm_isaac_exploration/docker/Dockerfile_nvidia_arm64 --build-arg architecture_=$ARCH --progress=plain .
     sudo umount src/root_mount/
 else
-    docker build -t smacc2_isaac -f src/sm_isaac_exploration/docker/Dockerfile --build-arg architecture_=$ARCH --progress=plain .
+    docker build -t smacc2_isaac_exploration -f src/sm_isaac_exploration/docker/Dockerfile --build-arg architecture_=$ARCH --progress=plain .
 fi
