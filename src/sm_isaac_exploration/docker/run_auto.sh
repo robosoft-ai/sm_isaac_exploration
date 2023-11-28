@@ -12,8 +12,8 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # source $ROOT/utils/print_color.sh
 
 function usage() {
-    print_info "Usage: run_dev.sh" {isaac_ros_dev directory path OPTIONAL}
-    print_info "Copyright (c) 2021-2022, NVIDIA CORPORATION."
+    echo "Usage: run_dev.sh" {isaac_ros_dev directory path OPTIONAL}
+    echo "Copyright (c) 2021-2022, NVIDIA CORPORATION."
 }
 
 # Read and parse config file if exists
@@ -98,7 +98,7 @@ fi
 
 
 #*******IMAGE NAME*********
-BASE_NAME="smacc2_isaac"
+BASE_NAME="smacc2_isaac_exploration"
 CONTAINER_NAME="$BASE_NAME-container"
 
 # Remove any exited containers.
@@ -108,7 +108,7 @@ fi
 
 # Re-use existing container.
 if [ "$(docker ps -a --quiet --filter status=running --filter name=$CONTAINER_NAME)" ]; then
-    print_info "Attaching to running container: $CONTAINER_NAME"
+    echo "Attaching to running container: $CONTAINER_NAME"
     docker exec -i -t -u admin --workdir /workspaces/isaac_ros-dev $CONTAINER_NAME /bin/bash $@
     exit 0
 fi
@@ -132,7 +132,7 @@ DOCKER_ARGS+=("-e ROS_DOMAIN_ID")
 # Optionally load custom docker arguments from file
 DOCKER_ARGS_FILE="$ROOT/.isaac_ros_dev-dockerargs"
 if [[ -f "$DOCKER_ARGS_FILE" ]]; then
-    print_info "Using additional Docker run arguments from $DOCKER_ARGS_FILE"
+    echo "Using additional Docker run arguments from $DOCKER_ARGS_FILE"
     readarray -t DOCKER_ARGS_FILE_LINES < $DOCKER_ARGS_FILE
     for arg in "${DOCKER_ARGS_FILE_LINES[@]}"; do
         DOCKER_ARGS+=($(eval "echo $arg | envsubst"))
