@@ -99,8 +99,7 @@ fi
 
 #*******IMAGE NAME*********
 BASE_NAME="pibgeus/smacc2_isaac_exploration"
-CONTAINER_NAME="$BASE_NAME-container"
-
+CONTAINER_NAME="smacc2_isaac_exploration-container"
 # Remove any exited containers.
 if [ "$(docker ps -a --quiet --filter status=exited --filter name=$CONTAINER_NAME)" ]; then
     docker rm $CONTAINER_NAME > /dev/null
