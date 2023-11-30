@@ -142,6 +142,16 @@ echo "DOCKER ARGS: ${DOCKER_ARGS[@]}"
 echo "ISAAC_ROS_DEV_DIR: $ISAAC_ROS_DEV_DIR"
 echo "CONTAINER_NAME: $CONTAINER_NAME"
 
+# Determine the system architecture
+ARCH=$(dpkg --print-architecture)
+
+# Set the tag based on the architecture
+if [ "$ARCH" == "amd64" ]; then
+    ARCH_TAG="latest"
+else
+    ARCH_TAG="arm64-latest"
+fi
+
 docker run -it --rm \
     --privileged \
     --network host \
@@ -154,5 +164,5 @@ docker run -it --rm \
     --user="admin" \
     --entrypoint /usr/local/bin/scripts/workspace-entrypoint.sh \
     --workdir /workspaces/isaac_ros-dev \
-    $BASE_NAME \
+    "$BASE_NAME:$ARCH_TAG" \
     /bin/bash
