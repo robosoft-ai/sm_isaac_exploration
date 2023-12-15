@@ -30,8 +30,8 @@ using cl_rrt_explore_assigner::CbStartExploration;
 // using smacc2::client_behaviors::CbRosLaunch2;
 
 // STATE DECLARATION
-struct StLaunchExploration
-    : smacc2::SmaccState<StLaunchExploration, MsIsaacExplorationRunMode> {
+struct StStartExploration
+    : smacc2::SmaccState<StStartExploration, MsIsaacExplorationRunMode> {
   using SmaccState::SmaccState;
 
   struct STARTING_EXPLORATION : SUCCESS {};

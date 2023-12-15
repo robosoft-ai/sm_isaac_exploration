@@ -80,9 +80,10 @@ using namespace smacc2::state_reactors;
 namespace sm_isaac_exploration {
 // STATE FORWARD DECLARATIONS
 class StAcquireSensors;
+class StInitialMove;
 class StRecoveryNav2;
 class StNavigateWarehouseWaypointsX;
-class StLaunchExploration;
+class StStartExploration;
 class StSetExplorationArea;
 class StExploreNextPoint;
 class StExploreCheckPoint;
@@ -169,6 +170,7 @@ struct SmIsaacExploration
 // STATES
 #include <sm_isaac_exploration/states/st_acquire_sensors.hpp>
 #include <sm_isaac_exploration/states/st_recovery_nav2.hpp>
+#include <sm_isaac_exploration/states/st_initial_move.hpp>
 #include <sm_isaac_exploration/states/st_exploration_point_spinning.hpp>
 #include <sm_isaac_exploration/states/st_explore_next_point.hpp>
 #include <sm_isaac_exploration/states/st_explore_check_point.hpp>

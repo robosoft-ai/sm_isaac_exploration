@@ -47,7 +47,7 @@ struct StAcquireSensors
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StLaunchExploration,
+      Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StInitialMove,
                  ON_SENSORS_AVAILABLE>,
 
       Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StRecoveryNav2, SUCCESS>,

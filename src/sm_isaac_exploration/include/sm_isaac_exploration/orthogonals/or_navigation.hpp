@@ -21,6 +21,7 @@
 #pragma once
 
 #include <nav2z_client/nav2z_client.hpp>
+#include <smacc2/client_bases/smacc_publisher_client.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
@@ -32,6 +33,8 @@
 #include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp>
 
 #include <smacc2/client_bases/smacc_ros_launch_client_2.hpp>
+
+#include <smacc2/client_base_components/cp_topic_publisher.hpp>
 
 namespace sm_isaac_exploration {
 using namespace cl_nav2z;
@@ -45,6 +48,8 @@ public:
     auto nav2zClient = this->createClient<ClNav2Z>();
 
     auto rosLaunchClient = this->createClient<ClRosLaunch2>();
+
+    // auto publisherClient = this->createClient<SmaccPublisherClient>();
 
     // create pose component
     nav2zClient->createComponent<cl_nav2z::Pose>();
@@ -60,6 +65,8 @@ public:
 
     // create odom tracker
     nav2zClient->createComponent<cl_nav2z::CpSlamToolbox>();
+
+    nav2zClient->createComponent<smacc2::components::CpTopicPublisher<geometry_msgs::msg::Twist>>("/cmd_vel");
 
     // create waypoints navigator component
     auto waypointsNavigator =
