@@ -12,8 +12,8 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # source $ROOT/utils/print_color.sh
 
 function usage() {
-    print_info "Usage: run_dev.sh" {isaac_ros_dev directory path OPTIONAL}
-    print_info "Copyright (c) 2021-2022, NVIDIA CORPORATION."
+    echo "Usage: run_dev.sh" {isaac_ros_dev directory path OPTIONAL}
+    echo "Copyright (c) 2021-2022, NVIDIA CORPORATION."
 }
 
 # Read and parse config file if exists
@@ -98,9 +98,8 @@ fi
 
 
 #*******IMAGE NAME*********
-BASE_NAME="smacc2_isaac"
-CONTAINER_NAME="$BASE_NAME-container"
-
+BASE_NAME="pibgeus/smacc2_isaac_exploration"
+CONTAINER_NAME="smacc2_isaac_exploration-container"
 # Remove any exited containers.
 if [ "$(docker ps -a --quiet --filter status=exited --filter name=$CONTAINER_NAME)" ]; then
     docker rm $CONTAINER_NAME > /dev/null
@@ -108,7 +107,7 @@ fi
 
 # Re-use existing container.
 if [ "$(docker ps -a --quiet --filter status=running --filter name=$CONTAINER_NAME)" ]; then
-    print_info "Attaching to running container: $CONTAINER_NAME"
+    echo "Attaching to running container: $CONTAINER_NAME"
     docker exec -i -t -u admin --workdir /workspaces/isaac_ros-dev $CONTAINER_NAME /bin/bash $@
     exit 0
 fi
@@ -132,7 +131,7 @@ DOCKER_ARGS+=("-e ROS_DOMAIN_ID")
 # Optionally load custom docker arguments from file
 DOCKER_ARGS_FILE="$ROOT/.isaac_ros_dev-dockerargs"
 if [[ -f "$DOCKER_ARGS_FILE" ]]; then
-    print_info "Using additional Docker run arguments from $DOCKER_ARGS_FILE"
+    echo "Using additional Docker run arguments from $DOCKER_ARGS_FILE"
     readarray -t DOCKER_ARGS_FILE_LINES < $DOCKER_ARGS_FILE
     for arg in "${DOCKER_ARGS_FILE_LINES[@]}"; do
         DOCKER_ARGS+=($(eval "echo $arg | envsubst"))
@@ -142,6 +141,16 @@ fi
 echo "DOCKER ARGS: ${DOCKER_ARGS[@]}"
 echo "ISAAC_ROS_DEV_DIR: $ISAAC_ROS_DEV_DIR"
 echo "CONTAINER_NAME: $CONTAINER_NAME"
+
+# Determine the system architecture
+ARCH=$(dpkg --print-architecture)
+
+# Set the tag based on the architecture
+if [ "$ARCH" == "amd64" ]; then
+    ARCH_TAG="latest"
+else
+    ARCH_TAG="arm64-latest"
+fi
 
 docker run -it --rm \
     --privileged \
@@ -155,5 +164,5 @@ docker run -it --rm \
     --user="admin" \
     --entrypoint /usr/local/bin/scripts/workspace-entrypoint.sh \
     --workdir /workspaces/isaac_ros-dev \
-    $BASE_NAME \
+    "$BASE_NAME:$ARCH_TAG" \
     /bin/bash

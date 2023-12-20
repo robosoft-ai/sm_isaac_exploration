@@ -12,8 +12,8 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # source $ROOT/utils/print_color.sh
 
 function usage() {
-    print_info "Usage: run_dev.sh" {isaac_ros_dev directory path OPTIONAL}
-    print_info "Copyright (c) 2021-2022, NVIDIA CORPORATION."
+    echo "Usage: run_dev.sh" {isaac_ros_dev directory path OPTIONAL}
+    echo "Copyright (c) 2021-2022, NVIDIA CORPORATION."
 }
 
 # Read and parse config file if exists
@@ -66,30 +66,30 @@ ON_EXIT+=("popd")
 
 # Prevent running as root.
 if [[ $(id -u) -eq 0 ]]; then
-    print_error "This script cannot be executed with root privileges."
-    print_error "Please re-run without sudo and follow instructions to configure docker for non-root user if needed."
+    echo "This script cannot be executed with root privileges."
+    echo "Please re-run without sudo and follow instructions to configure docker for non-root user if needed."
     exit 1
 fi
 
 # Check if user can run docker without root.
 RE="\<docker\>"
 if [[ ! $(groups $USER) =~ $RE ]]; then
-    print_error "User |$USER| is not a member of the 'docker' group and cannot run docker commands without sudo."
-    print_error "Run 'sudo usermod -aG docker \$USER && newgrp docker' to add user to 'docker' group, then re-run this script."
-    print_error "See: https://docs.docker.com/engine/install/linux-postinstall/"
+    echo "User |$USER| is not a member of the 'docker' group and cannot run docker commands without sudo."
+    echo "Run 'sudo usermod -aG docker \$USER && newgrp docker' to add user to 'docker' group, then re-run this script."
+    echo "See: https://docs.docker.com/engine/install/linux-postinstall/"
     exit 1
 fi
 
 # Check if able to run docker commands.
 if [[ -z "$(docker ps)" ]] ;  then
-    print_error "Unable to run docker commands. If you have recently added |$USER| to 'docker' group, you may need to log out and log back in for it to take effect."
-    print_error "Otherwise, please check your Docker installation."
+    echo "Unable to run docker commands. If you have recently added |$USER| to 'docker' group, you may need to log out and log back in for it to take effect."
+    echo "Otherwise, please check your Docker installation."
     exit 1
 fi
 
 # Check if git-lfs is installed.
 if [[ -z "$(git lfs)" ]] ; then
-    print_error "git-lfs is not insalled. Please make sure git-lfs is installed before you clone the repo."
+    echo "git-lfs is not insalled. Please make sure git-lfs is installed before you clone the repo."
     exit 1
 fi
 
@@ -100,7 +100,7 @@ if [[ $? -eq 0 ]]; then
     for (( i=0; i<${#LFS_FILES_STATUS}; i++ )); do
         f="${LFS_FILES_STATUS:$i:1}"
         if [[ "$f" == "-" ]]; then
-            print_error "LFS files are missing. Please re-clone the repo after installing git-lfs."
+            echo "LFS files are missing. Please re-clone the repo after installing git-lfs."
             exit 1
         fi
     done
@@ -109,7 +109,7 @@ fi
 # PLATFORM=".imp.$(uname -m)"
 
 #*******IMAGE NAME*********
-BASE_NAME="smacc2_isaac"
+BASE_NAME="pibgeus/smacc2_isaac_exploration"
 CONTAINER_NAME="$BASE_NAME-container"
 
 # Remove any exited containers.
@@ -119,7 +119,7 @@ fi
 
 # Re-use existing container.
 if [ "$(docker ps -a --quiet --filter status=running --filter name=$CONTAINER_NAME)" ]; then
-    print_info "Attaching to running container: $CONTAINER_NAME"
+    echo "Attaching to running container: $CONTAINER_NAME"
     docker exec -i -t -u admin --workdir /workspaces/isaac_ros-dev $CONTAINER_NAME /bin/bash $@
     exit 0
 fi
@@ -144,7 +144,7 @@ fi
 # $ROOT/build_base_image.sh
 
 if [ $? -ne 0 ]; then
-    # print_error "Failed to build base image: $BASE_NAME, aborting."
+    # echo "Failed to build base image: $BASE_NAME, aborting."
     exit 1
 fi
 
@@ -185,7 +185,7 @@ DOCKER_ARGS+=("-e ROS_DOMAIN_ID")
 # Optionally load custom docker arguments from file
 DOCKER_ARGS_FILE="$ROOT/.isaac_ros_dev-dockerargs"
 if [[ -f "$DOCKER_ARGS_FILE" ]]; then
-    print_info "Using additional Docker run arguments from $DOCKER_ARGS_FILE"
+    echo "Using additional Docker run arguments from $DOCKER_ARGS_FILE"
     readarray -t DOCKER_ARGS_FILE_LINES < $DOCKER_ARGS_FILE
     for arg in "${DOCKER_ARGS_FILE_LINES[@]}"; do
         DOCKER_ARGS+=($(eval "echo $arg | envsubst"))
