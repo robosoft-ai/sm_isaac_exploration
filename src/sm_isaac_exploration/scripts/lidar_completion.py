@@ -7,21 +7,21 @@
 
 #     def __init__(self):
 #         super().__init__('lidar_processor')
-        
+
 #         qos_prof = QoSProfile(
 #             reliability=ReliabilityPolicy.BEST_EFFORT,
 #             history=HistoryPolicy.KEEP_LAST,
 #             depth=10
 #         )
-        
+
 #         self.subscription = self.create_subscription(
 #             LaserScan,
 #             '/lidar_topic',  # Reemplaza '/lidar_topic' con el nombre correcto de tu tópico Lidar
 #             self.lidar_callback,
-#             # 10,  # Ajusta el valor según la cantidad de mensajes que desees acumular antes de procesarlos 
+#             # 10,  # Ajusta el valor según la cantidad de mensajes que desees acumular antes de procesarlos
 #             qos_profile=qos_prof
-#         )        
-        
+#         )
+
 #         self.msg_buffer = []
 #         self.publisher = self.create_publisher(
 #             LaserScan,
@@ -67,9 +67,6 @@
 #     main()
 
 
-
-
-
 ##############################################################################################
 
 # import rclpy
@@ -82,26 +79,26 @@
 
 #     def __init__(self):
 #         super().__init__('lidar_processor')
-        
+
 #         qos_prof_1 = QoSProfile(
 #             reliability=ReliabilityPolicy.BEST_EFFORT,
 #             history=HistoryPolicy.KEEP_LAST,
 #             depth=10
 #         )
-        
+
 #         self.subscription = self.create_subscription(
 #             LaserScan,
 #             '/lidar_topic',  # Reemplaza '/lidar_topic' con el nombre correcto de tu tópico Lidar
 #             self.lidar_callback,
 #             qos_profile=qos_prof_1
-#         )        
-        
+#         )
+
 #         qos_prof_2 = QoSProfile(
 #             reliability=ReliabilityPolicy.RELIABLE,
 #             history=HistoryPolicy.KEEP_LAST,
 #             depth=10
 #         )
-        
+
 #         self.msg_buffer = []
 #         self.publisher = self.create_publisher(
 #             LaserScan,
@@ -121,7 +118,7 @@
 #                 merged_msg = self.merge_lidar_msgs()
 #                 self.msg_buffer = []
 #                 self.publisher.publish(merged_msg)  # Publicar el mensaje combinado directamente
-                
+
 #         else:
 #             self.publisher.publish(msg)
 
@@ -136,9 +133,9 @@
 #                     merged_ranges[j] = self.msg_buffer[i].ranges[j]
 #                 else:
 #                     cont_inf += 1
-                    
+
 #         self.logger.info("Number of inifinite values from total: " + cont_inf + "/" + cont_tot)
-                    
+
 
 #         merged_msg = LaserScan()
 #         merged_msg.header = self.msg_buffer[0].header
@@ -158,44 +155,31 @@
 #     main()
 
 
-
-
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 import logging
 
-class LidarProcessor(Node):
 
+class LidarProcessor(Node):
     def __init__(self):
-        super().__init__('lidar_processor')
+        super().__init__("lidar_processor")
 
         qos_prof_1 = QoSProfile(
-            reliability=ReliabilityPolicy.BEST_EFFORT,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=10
+            reliability=ReliabilityPolicy.BEST_EFFORT, history=HistoryPolicy.KEEP_LAST, depth=10
         )
 
         self.subscription = self.create_subscription(
-            LaserScan,
-            '/lidar_topic',
-            self.lidar_callback,
-            qos_profile=qos_prof_1
+            LaserScan, "/lidar_topic", self.lidar_callback, qos_profile=qos_prof_1
         )
 
         qos_prof_2 = QoSProfile(
-            reliability=ReliabilityPolicy.RELIABLE,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=10
+            reliability=ReliabilityPolicy.RELIABLE, history=HistoryPolicy.KEEP_LAST, depth=10
         )
 
         self.msg_buffer = []
-        self.publisher = self.create_publisher(
-            LaserScan,
-            '/scan',
-            qos_profile=qos_prof_2
-        )
+        self.publisher = self.create_publisher(LaserScan, "/scan", qos_profile=qos_prof_2)
         self.msg_count = 0
 
         # Configuración del logger
@@ -222,7 +206,7 @@ class LidarProcessor(Node):
         for i in range(len(self.msg_buffer)):
             cont_tot += 1
             for j in range(len(self.msg_buffer[i].ranges)):
-                if self.msg_buffer[i].ranges[j] != float('inf'):
+                if self.msg_buffer[i].ranges[j] != float("inf"):
                     merged_ranges[j] = self.msg_buffer[i].ranges[j]
                 else:
                     cont_inf += 1
@@ -243,5 +227,6 @@ def main(args=None):
     lidar_processor.destroy_node()
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
