@@ -36,7 +36,7 @@ struct StInitialMove
     auto pub = clNav->getComponent<smacc2::components::CpTopicPublisher<geometry_msgs::msg::Twist>>();
     auto twist_msg = std::make_shared<geometry_msgs::msg::Twist>();
     twist_msg->linear.x = 0.2; 
-    twist_msg->angular.z = 0.5; 
+    twist_msg->angular.z = 1.0; 
     pub->publish(*twist_msg);
   }
 };

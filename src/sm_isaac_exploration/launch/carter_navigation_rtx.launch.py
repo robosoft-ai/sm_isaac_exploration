@@ -64,9 +64,9 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 "map", default_value=map_dir, description="Full path to map file to load"
             ),
-            DeclareLaunchArgument(
-                "map", default_value=map_dir, description="Full path to map file to load"
-            ),
+            # DeclareLaunchArgument(
+            #     "map", default_value=map_dir, description="Full path to map file to load"
+            # ),
             DeclareLaunchArgument(
                 "params_file",
                 default_value=param_dir,
@@ -112,6 +112,7 @@ def generate_launch_description():
             Node(
                 package="pointcloud_to_laserscan",
                 executable="pointcloud_to_laserscan_node",
+                # remappings=[("cloud_in", ["/front_3d_lidar/point_cloud"]), ("scan", ["/scan"])],
                 remappings=[("cloud_in", ["/front_3d_lidar/point_cloud"]), ("scan", ["/scan"])],
                 parameters=[
                     {

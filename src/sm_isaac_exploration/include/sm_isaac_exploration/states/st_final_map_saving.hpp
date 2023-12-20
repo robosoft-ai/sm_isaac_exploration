@@ -47,7 +47,8 @@ struct StFinalMapSaving
     configure_orthogonal<OrNavigation, CbActiveStop>();
     configure_orthogonal<OrNavigation, CbSaveSlamMap>();
     configure_orthogonal<OrNavigation, CbSleepFor>(10s);
-    configure_orthogonal<OrSlam, CbRosStop2>();
+    // configure_orthogonal<OrSlam, CbRosStop2>();
+    configure_orthogonal<OrSlam, CbPauseSlam>();
     configure_orthogonal<OrNavigation, CbSleepFor>(10s);
     // configure_orthogonal<OrLocalization, CbRosLaunch2>(
     //     "sm_isaac_exploration",
@@ -55,7 +56,8 @@ struct StFinalMapSaving
     //     smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
     configure_orthogonal<OrLocalization, CbRosLaunch2>(
         "sm_isaac_exploration",
-        "isaac_ros_occupancy_grid_localizer_no_nav2.launch.py",
+        // "isaac_ros_occupancy_grid_localizer",
+        "isaac_ros_occupancy_grid_localizer_nav2.launch.py",
         smacc2::client_behaviors::RosLaunchMode::LAUNCH_DETTACHED);
     configure_orthogonal<OrLocalization, CbSleepFor>(15s);
   }
