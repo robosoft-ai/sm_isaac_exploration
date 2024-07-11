@@ -14,7 +14,7 @@ slam_toolbox:
     map_frame: map
     # base_frame: base_footprint
     base_frame: base_link
-    scan_topic: /scan
+    scan_topic: /front_2d_lidar/scan
     mode: mapping #localization
 
     # if you'd like to immediately start continuing a map at a given pose

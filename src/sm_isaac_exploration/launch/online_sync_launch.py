@@ -32,6 +32,7 @@ def generate_launch_description():
         name="slam_toolbox",
         prefix="xterm -hold -e",
         output="screen",
+        remappings=[("/scan", "/front_2d_lidar/scan")],
     )
 
     ld = LaunchDescription()
